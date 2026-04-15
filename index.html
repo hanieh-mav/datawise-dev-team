@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Testing App</title>
+    <style>
+        /* CSS Variables for a cool Dark Theme */
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --primary-color: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+
+        /* Banner Placeholder - Hidden by default */
+        #ad-banner {
+            display: none; /* Change to block when you need it */
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--surface-color);
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1.5rem;
+            border-bottom: 1px solid #334155;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        nav a:hover, nav a.active { color: var(--primary-color); }
+
+        /* Main Container */
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+        /* Pages/Sections (SPA Logic) */
+        .page-section { display: none; animation: fadeIn 0.3s; }
+        .page-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards & UI Elements */
+        .card { background: var(--surface-color); padding: 2rem; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
+        h1, h2 { color: var(--primary-color); margin-bottom: 1rem; }
+        p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+        /* Buttons */
+        .btn {
+            background-color: var(--primary-color);
+            color: #0f172a;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            margin-right: 10px;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn:active { transform: scale(0.96); }
+        .btn-secondary { background-color: #475569; color: white; }
+
+        /* Forms */
+        input {
+            width: 100%; padding: 0.75rem; margin-bottom: 1rem; border-radius: 4px;
+            border: 1px solid #475569; background: var(--bg-color); color: white;
+        }
+
+        /* Scroll Target for View Element Analytics */
+        .spacer { height: 120vh; display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
+        #view-target { border-left: 4px solid #10b981; }
+
+        /* Responsive */
+        @media (max-width: 600px) { nav { flex-direction: column; text-align: center; } }
+    </style>
+</head>
+<body>
+
+    <!-- Banner (Activate by changing CSS display property) -->
+    <div id="ad-banner" data-analytics-element="top_promo_banner">
+        🚀 Special Offer: 50% Off Data Analytics Tools!
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a class="nav-link active" data-target="home">Home</a>
+        <a class="nav-link" data-target="products">Products</a>
+        <a class="nav-link" data-target="login">Login</a>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="container">
+
+        <!-- HOME PAGE -->
+        <section id="home" class="page-section active">
+            <div class="card">
+                <h1>Welcome to Analytics Test Site</h1>
+                <p>This is the main dashboard. Click around to generate events.</p>
+                <button class="btn track-click" data-event-name="hero_cta_clicked">Get Started (Click Event)</button>
+                <button class="btn btn-secondary track-click" data-event-name="learn_more_clicked">Learn More</button>
+            </div>
+            <div class="card">
+                <h2>Simulate Math/Data View</h2>
+                <p>Here is some random math data for your dashboard: $$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</p>
+            </div>
+        </section>
+
+        <!-- PRODUCTS / SCROLL VIEW PAGE -->
+        <section id="products" class="page-section">
+            <div class="card">
+                <h1>Products Overview</h1>
+                <p>Scroll down to the bottom of the page to trigger an <strong>Element View</strong> event.</p>
+            </div>
+
+            <div class="spacer">⬇️ Keep Scrolling ⬇️</div>
+
+            <!-- This is the element we will track for "Visibility" -->
+            <div id="view-target" class="card">
+                <h2>🎉 Hidden Treasure Found!</h2>
+                <p>You scrolled far enough. An IntersectionObserver just fired an 'element_view' event to the console.</p>
+                <button class="btn track-click" data-event-name="purchase_treasure">Buy Now</button>
+            </div>
+        </section>
+
+        <!-- LOGIN PAGE -->
+        <section id="login" class="page-section">
+            <div class="card" style="max-width: 400px; margin: 0 auto;">
+                <h1>Account Login</h1>
+                <form id="login-form">
+                    <input type="text" placeholder="Username" id="username" required>
+                    <input type="password" placeholder="Password" id="password" required>
+                    <button type="submit" class="btn" style="width: 100%; margin: 0;">Sign In (Login Event)</button>
+                </form>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>
